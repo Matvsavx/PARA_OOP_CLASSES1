@@ -1,12 +1,22 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 enum GENDER {
     U, M, F
 };
 
 enum HEALTH {
     A1, A2, A3, B1, B2, B3
+};
+
+enum GRADES {
+    EX, GOOD
+};
+
+enum DIPLOM {
+    RED, BlUE
 };
 
 // 1. Создать несколько Human.
@@ -84,15 +94,54 @@ public:
 };
 
 class GoodStudent: public Student {
+    GRADES grades;
+public:
+    GoodStudent(int age, GENDER gender, HEALTH health, const std::string &numberOfZachetka, GRADES grades) : Student(
+            age, gender, health, numberOfZachetka), grades(grades) {
+        this -> grades = grades;
+    }
+
+    GRADES getGrades() const {
+        return grades;
+    }
+
+    void setGrades(GRADES grades) {
+        this->grades = grades;
+    }
 };
 
-class Specialist: public Human {
+class Specialist: public GoodStudent {
+    DIPLOM diplom;
+public:
+    Specialist(int age, GENDER gender, HEALTH health, const std::string &numberOfZachetka, GRADES grades, DIPLOM diplom)
+            : GoodStudent(age, gender, health, numberOfZachetka, grades), diplom(diplom) {
+        this->diplom = diplom;
+    }
+
+    DIPLOM getDiplom() const {
+        return diplom;
+    }
+
+    void setDiplom(DIPLOM diplom) {
+        this->diplom = diplom;
+    }
 };
 
-class Professor: public Specialist, GoodStudent {
-};
+class Zek: public BadStudent {
+    bool conviction;
+public:
+    Zek(int age, GENDER gender, HEALTH health, const std::string &numberOfZachetka, bool misconduct, bool conviction)
+            : BadStudent(age, gender, health, numberOfZachetka, misconduct), conviction(conviction) {
+        this->conviction = conviction;
+    }
 
-class Dekan: public Specialist {
+    bool getConviction() const {
+        return conviction;
+    }
+
+    void setConviction(bool conviction) {
+        this->conviction = conviction;
+    }
 };
 
 int main() {
@@ -103,24 +152,56 @@ int main() {
     Student olya(25, GENDER::F, HEALTH::A2, "345678907654");
     Student matvey(18, GENDER::M, HEALTH::A1, "77777777777");
 
+    GoodStudent Petr(21, GENDER::U, HEALTH::A3, "007333445", GRADES::EX);
 
-    BadStudent ivan(30, GENDER::U, HEALTH::A2, "228666", 1);
+    BadStudent ivan(30, GENDER::U, HEALTH::A2, "228666", true);
 
-    std::cout << vasya.getAge() << std::endl;
-    std::cout << vasya.getGender() << std::endl;
+    Specialist Serega(40, GENDER::M, HEALTH::A1, "5555444555", GRADES::EX, DIPLOM::RED);
 
-    std::cout << olya.getAge() << std::endl;
-    std::cout << olya.getGender() << std::endl;
-    std::cout << olya.getNumberOfZachetka() << std::endl;
+    Zek Valya(47, GENDER::F, HEALTH::B2, "2281337", true, true);
 
-    std::cout << matvey.getAge() << std::endl;
-    std::cout << matvey.getHealth() << std::endl;
-    std::cout << matvey.getNumberOfZachetka() << std::endl;
+    cout << "VASYA (human):" << endl;
+    cout << "Age: " << vasya.getAge() << endl;
+    cout << "Gender: " << vasya.getGender() << endl;
+    cout << "Health: " << vasya.getHealth() << endl;
 
-    std::cout << ivan.getNumberOfZachetka() << std::endl;
-    std::cout << ivan.getAge() << std::endl;
-    std::cout << ivan.getGender() << std::endl;
-    std::cout << ivan.getMisconduct() << std::endl;
+    cout << endl << "OLYA (student): " << endl;
+    cout << "Age: " << olya.getAge() << endl;
+    cout << "Gender: " << olya.getGender() << endl;
+    cout << "Zachetka: " << olya.getNumberOfZachetka() << endl;
+
+    cout << endl << "MATVEY (student): " << endl;
+    cout << "Age: " << matvey.getAge() << endl;
+    cout << "Gender: " << matvey.getGender() << endl;
+    cout << "Zachetka: " << matvey.getNumberOfZachetka() << endl;
+
+    cout << endl << "IVAN (bad student):" << endl;
+    cout << "Zachetka: " << ivan.getNumberOfZachetka() << endl;
+    cout << "Age: " << ivan.getAge() << endl;
+    cout << "Gender: " << ivan.getGender() << endl;
+    cout << "Miscondacts: " << ivan.getMisconduct() << endl;
+
+    cout << endl << "PETR (good student): " << endl;
+    cout << "Age: " << Petr.getAge() << endl;
+    cout << "Gender: " << Petr.getGender() << endl;
+    cout << "Zachetka: " << Petr.getNumberOfZachetka() << endl;
+    cout << "Health: " << Petr.getHealth() << endl;
+    cout << "Grades: " << Petr.getGrades() << endl;
+
+    cout << endl << "SEREGA (specialist):" << endl;
+    cout << "Age: " << Serega.getAge() << endl;
+    cout << "Gender: " << Serega.getGender() << endl;
+    cout << "Zachetka: " << Serega.getNumberOfZachetka() << endl;
+    cout << "Health: " << Serega.getHealth() << endl;
+    cout << "Grades: " << Serega.getGrades() << endl;
+    cout << "Diplom: " << Serega.getDiplom() << endl;
+
+    cout << endl << "VALYA (zek):" << endl;
+    cout << "Zachetka: " << Valya.getNumberOfZachetka() << endl;
+    cout << "Age: " << Valya.getAge() << endl;
+    cout << "Gender: " << Valya.getGender() << endl;
+    cout << "Miscondacts: " << Valya.getMisconduct() << endl;
+    cout << "Convictions: " << Valya.getConviction() << endl;
 
     return 0;
 }
